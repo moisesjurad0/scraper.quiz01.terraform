@@ -1,0 +1,29 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - dev
+      - prod
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: |
+          terraform workspace new ${{ github.ref }}
+          terraform workspace select ${{ github.ref }}
+          terraform apply -auto-approve
+        env:
+          TF_VAR_some_variable: ${{ secrets.SOME_VARIABLE }}
