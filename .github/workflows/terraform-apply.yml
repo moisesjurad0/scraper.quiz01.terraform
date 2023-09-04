@@ -26,9 +26,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Apply
-        if: steps.workspace.outputs.workspace == 'dev'  # Solo aplica si el workspace es 'dev'
+        if: steps.workspace.outputs.workspace == 'dev' # Solo aplica si el workspace es 'dev'
         run: terraform apply -auto-approve
 
-      - name: Terraform Destroy
-        if: steps.workspace.outputs.workspace == 'dev'  # Solo destruye si el workspace es 'dev'
-        run: terraform destroy -auto-approve
+      # - name: Terraform Destroy
+      #   if: steps.workspace.outputs.workspace == 'dev'  # Solo destruye si el workspace es 'dev'
+      #   run: terraform destroy -auto-approve
