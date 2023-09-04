@@ -1,29 +1,34 @@
-name: Terraform Apply
+name: Terraform Workflow
 
 on:
   push:
     branches:
-      - dev
-      - prod
+      - main
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.15.x
+
+      - name: Get Active Workspace
+        id: workspace
+        run: echo "::set-output name=workspace::$(terraform workspace show)"
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Apply
-        run: |
-          terraform workspace new ${{ github.ref }}
-          terraform workspace select ${{ github.ref }}
-          terraform apply -auto-approve
-        env:
-          TF_VAR_some_variable: ${{ secrets.SOME_VARIABLE }}
+        if: steps.workspace.outputs.workspace == 'dev'  # Solo aplica si el workspace es 'dev'
+        run: terraform apply -auto-approve
+
+      - name: Terraform Destroy
+        if: steps.workspace.outputs.workspace == 'dev'  # Solo destruye si el workspace es 'dev'
+        run: terraform destroy -auto-approve
