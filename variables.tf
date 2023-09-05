@@ -4,3 +4,13 @@ variable "example_variable" {
   type        = string
   default     = "dev-default-value"
 }
+
+variable "container_env" {
+  description = "Environment variables to pass to the container"
+  type        = map(string)
+  # Optionally, you can set default values here if needed.
+  # default     = {
+  #   DATABASE_URL = "default-value"
+  #   API_KEY      = "default-value"
+  # }
+}

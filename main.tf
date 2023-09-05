@@ -22,9 +22,35 @@ resource "docker_container" "scrapper" {
     "/dev/null"
   ]
 
+  # env_file          = "./.env"
+  # env = ["SERVICE=elastic", "PROJECT=stage", "ENVIRONMENT=operations"]
+  # env = var.container_env
+  env = [
+    for key, value in var.container_env :
+    "${key}=${value}"
+  ]
+
+  # dynamic "env" {
+  #   for_each = var.container_env
+  #   content {
+  #     name  = env.key
+  #     value = env.value
+  #   }
+  # }
+
   # port_bindings {
   #   container_port = 80
   #   host_port      = 8080
+  # }
+
+  # ports {
+  #   internal = 22
+  #   external = 2222
+  # }
+
+  # export {
+  #   name  = "SSH_PORT"
+  #   value = 2222
   # }
 }
 
@@ -34,13 +60,3 @@ resource "docker_container" "scrapper" {
 #   # Añade aquí las variables de entorno que desees inyectar
 # }
 
-# ports {
-#   internal = 22
-#   external = 2222
-# }
-
-# export {
-#   name  = "SSH_PORT"
-#   value = 2222
-# }
-# }
