@@ -1,26 +1,46 @@
-# Define your infrastructure resources for the 'dev' environment here.
-
 terraform {
   required_providers {
-    aws = "~> 3.77.0"
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0.1"
+    }
   }
 }
 
-
-resource "aws_ec2_instance" "example" {
-  ami                = "ami-01234567890abcdef"
-  instance_type      = "t2.micro"
-  subnet_id          = var.subnet_id
-  security_group_ids = [var.security_group_id]
+provider "docker" {
+  host = "npipe:////./pipe/docker_engine"
 }
 
-resource "aws_lambda_permission" "example" {
-  function_name = var.lambda_function_name
-  action        = "lambda:InvokeFunction"
-  principal     = "ec2.amazonaws.com"
-  source_arn    = aws_ec2_instance.example.arn
+resource "docker_container" "scrapper" {
+  name              = "scrapper"
+  image             = "ghcr.io/moisesjurad0/scrapper-1:51"
+  must_run          = true
+  publish_all_ports = true
+  command = [
+    "tail",
+    "-f",
+    "/dev/null"
+  ]
+
+  # port_bindings {
+  #   container_port = 80
+  #   host_port      = 8080
+  # }
 }
 
-output "instance_ip" {
-  value = aws_ec2_instance.example.public_ip
-}
+# environment = {
+#   VAR1 = "valor1",
+#   VAR2 = "valor2",
+#   # Añade aquí las variables de entorno que desees inyectar
+# }
+
+# ports {
+#   internal = 22
+#   external = 2222
+# }
+
+# export {
+#   name  = "SSH_PORT"
+#   value = 2222
+# }
+# }
