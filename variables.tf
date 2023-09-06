@@ -14,3 +14,16 @@ variable "container_env" {
   #   API_KEY      = "default-value"
   # }
 }
+
+variable "ssh_file" {
+  description = "aws ssh_file path"
+  type        = string
+}
+variable "access_key" {
+  description = "aws access_key"
+  type        = string
+}
+variable "secret_access_key" {
+  description = "aws secret_access_key"
+  type        = string
+}

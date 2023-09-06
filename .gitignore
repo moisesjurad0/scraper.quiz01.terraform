@@ -34,3 +34,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 .env
+
+/.ssh_key
