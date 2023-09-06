@@ -13,7 +13,7 @@ provider "docker" {
 
 resource "docker_container" "scrapper" {
   name              = "scrapper"
-  image             = "ghcr.io/moisesjurad0/scrapper-1:51"
+  image             = "ghcr.io/moisesjurad0/scrapper-1:60"
   must_run          = true
   publish_all_ports = true
   command = [
