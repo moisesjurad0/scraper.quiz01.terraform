@@ -19,10 +19,10 @@ variable "ssh_file" {
   description = "aws ssh_file path"
   type        = string
 }
-variable "ssh_file_priv" {
-  description = "aws ssh_file_priv path"
-  type        = string
-}
+# variable "ssh_file_priv" {
+#   description = "aws ssh_file_priv path"
+#   type        = string
+# }
 variable "access_key" {
   description = "aws access_key"
   type        = string

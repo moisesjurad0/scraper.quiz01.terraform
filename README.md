@@ -41,6 +41,28 @@ ssh -i tu-llave-ssh.pem ec2-user@<IP-PUBLICA-DE-TU-EC2>
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.89.94.185
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.146.1.110
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@3.91.229.161
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@52.90.142.186
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.209.232.155
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.210.221.51
+```
+
+```sh
+The authenticity of host '54.210.221.51 (54.210.221.51)' can't be established.
+ED25519 key fingerprint is SHA256:*******************************************.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? YES
+Warning: Permanently added '54.210.221.51' (ED25519) to the list of known hosts.
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+[ec2-user@ip-172-31-42-1 ~]$  
 ```
 
 ### 6. Obtener IP publico EC2

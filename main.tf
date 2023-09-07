@@ -11,47 +11,38 @@ resource "aws_key_pair" "mi_clave_ssh" {
   public_key = file(var.ssh_file) # Ruta de la clave pública
 }
 
+
+data "cloudinit_config" "example" {
+  part {
+    content_type = "text/cloud-config"
+    content = yamlencode({
+      write_files = [
+        {
+          encoding    = "b64"
+          content     = filebase64("./.env")
+          path        = "/home/ec2-user/.env"
+          owner       = "ec2-user:ec2-user"
+          permissions = "0755"
+        },
+      ]
+    })
+  }
+  part {
+    content_type = "text/x-shellscript"
+    content      = file("./cloudinit_config/user-data.sh")
+  }
+}
+
+
 # Crear una instancia EC2
 resource "aws_instance" "instance" {
   ami           = "ami-051f7e7f6c2f40dc1"            # Amazon Linux 2023 AMI (Free tier eligible)
   instance_type = "t2.micro"                         # Tipo de instancia gratuito
   key_name      = aws_key_pair.mi_clave_ssh.key_name # Utiliza la clave importada
 
-  provisioner "file" {
-    content     = file("./.env")
-    destination = "/home/ec2-user/.env"
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file(var.ssh_file_priv)
-      host        = self.public_ip
-    }
-  }
-
-
-
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              sudo yum install docker -y
-              sudo systemctl start docker
-              sudo systemctl enable docker
-              sudo usermod -a -G docker ec2-user
-              sudo docker run -d ghcr.io/moisesjurad0/scrapper-1:60 tail -f /dev/null --env-file .env
-              EOF
-  ###
-  ### NO SE PUDO INSTALAR 
-  # sudo amazon-linux-extras install docker -y #### NOT WORKIN BECAUSE THIS AMI DOESN'T HAVE amazon-linux-extras
-  ###
-  ### COMMANDS 
-  # sudo docker image ls
-  # sudo docker ps -a
-  # sudo docker container rm d3b809e6e9e7 99b3e502514d dfb8c3d950cf 5318d8331fe4 da0a45b39dbf 
-  # sudo docker exec -it CONTAINER_ID_OR_NAME sh
-  # sudo docker exec -it 45a279803fb1 sh
-  # sudo docker run -d ghcr.io/moisesjurad0/scrapper-1:60 tail -f /dev/null --env-file .env
-
-
+  # https://stackoverflow.com/questions/72159273/using-terraform-to-pass-a-file-to-newly-created-ec2-instance-without-sharing-the
+  user_data = data.cloudinit_config.example.rendered
+  # para mirar que hace esto, checa el archivo user-data.sh
 
   tags = {
     Name = "mi-instancia-ec2"
