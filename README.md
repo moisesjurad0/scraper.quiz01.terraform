@@ -38,6 +38,9 @@ Para obtener las credenciales de AWS (las `access_key` y `secret_key`), sigue es
 ```sh
 ssh -i tu-llave-ssh.pem ec2-user@<IP-PUBLICA-DE-TU-EC2>
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.86.219.204
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.89.94.185
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.146.1.110
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@3.91.229.161
 ```
 
 ### 6. Obtener IP publico EC2

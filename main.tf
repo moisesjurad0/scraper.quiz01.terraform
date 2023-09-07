@@ -17,10 +17,41 @@ resource "aws_instance" "instance" {
   instance_type = "t2.micro"                         # Tipo de instancia gratuito
   key_name      = aws_key_pair.mi_clave_ssh.key_name # Utiliza la clave importada
 
+  provisioner "file" {
+    content     = file("./.env")
+    destination = "/home/ec2-user/.env"
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(var.ssh_file_priv)
+      host        = self.public_ip
+    }
+  }
+
+
+
   user_data = <<-EOF
               #!/bin/bash
-              docker run -d ghcr.io/moisesjurad0/scrapper-1:60
+              sudo yum update -y
+              sudo yum install docker -y
+              sudo systemctl start docker
+              sudo systemctl enable docker
+              sudo usermod -a -G docker ec2-user
+              sudo docker run -d ghcr.io/moisesjurad0/scrapper-1:60 tail -f /dev/null --env-file .env
               EOF
+  ###
+  ### NO SE PUDO INSTALAR 
+  # sudo amazon-linux-extras install docker -y #### NOT WORKIN BECAUSE THIS AMI DOESN'T HAVE amazon-linux-extras
+  ###
+  ### COMMANDS 
+  # sudo docker image ls
+  # sudo docker ps -a
+  # sudo docker container rm d3b809e6e9e7 99b3e502514d dfb8c3d950cf 5318d8331fe4 da0a45b39dbf 
+  # sudo docker exec -it CONTAINER_ID_OR_NAME sh
+  # sudo docker exec -it 45a279803fb1 sh
+  # sudo docker run -d ghcr.io/moisesjurad0/scrapper-1:60 tail -f /dev/null --env-file .env
+
+
 
   tags = {
     Name = "mi-instancia-ec2"
