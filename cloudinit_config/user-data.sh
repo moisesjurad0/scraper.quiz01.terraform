@@ -1,12 +1,15 @@
 #!/bin/bash
-sudo yum update -y
-sudo yum install docker -y
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -a -G docker ec2-user
-sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-sudo docker-compose up -d
+sudo -s
+pwd > m01.log
+cd /home/ec2-user/
+yum update -y
+yum install docker -y
+systemctl start docker
+systemctl enable docker
+usermod -a -G docker ec2-user
+curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+docker-compose up -d
 
 ###
 ### COMMAND SUMMARY

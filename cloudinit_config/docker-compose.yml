@@ -4,7 +4,7 @@ services:
   mybot:
     #build: .
     image: squartle/scraper.quiz01.bot-api
-    env_file: .env
+    env_file: /home/ec2-user/.env
     tty: true
     ports:
       - 80:80
