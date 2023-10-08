@@ -43,7 +43,7 @@ ssh -i tu-llave-ssh.pem ec2-user@<IP-PUBLICA-DE-TU-EC2>
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@3.91.229.161
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@52.90.142.186
 # ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.209.232.155
-# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.210.221.51
+# ssh -i .\.ssh_key\tu-llave-ssh ec2-user@54.159.162.11
 ```
 
 ```sh

@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+
+  mybot:
+    #build: .
+    image: squartle/scraper.quiz01.bot-api
+    env_file: .env
+    tty: true
+    ports:
+      - 80:80

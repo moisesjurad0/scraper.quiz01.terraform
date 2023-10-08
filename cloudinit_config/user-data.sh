@@ -1,10 +1,13 @@
 #!/bin/bash
+cd 
 sudo yum update -y
 sudo yum install docker -y
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -a -G docker ec2-user
-sudo docker run --env-file .env -d ghcr.io/moisesjurad0/scrapper-1:60 tail -f /dev/null
+sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo docker-compose up -d
 
 ###
 ### COMMAND SUMMARY

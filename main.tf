@@ -12,20 +12,31 @@ resource "aws_key_pair" "mi_clave_ssh" {
 }
 
 
-data "cloudinit_config" "example" {
+data "cloudinit_config" "my_cloud_config" {
+  gzip          = false
+  base64_encode = false
+
   part {
     content_type = "text/cloud-config"
-    content = yamlencode({
-      write_files = [
-        {
-          encoding    = "b64"
-          content     = filebase64("./.env")
-          path        = "/home/ec2-user/.env"
-          owner       = "ec2-user:ec2-user"
-          permissions = "0755"
-        },
-      ]
-    })
+    filename     = "cloud.conf"
+    content = yamlencode(
+      {
+        "write_files" : [
+          {
+            "path" : "/home/ec2-user/docker-compose.yml",
+            "content" : file("./cloudinit_config/docker-compose.yml"),
+          },
+          {
+            "path" : "/home/ec2-user/.env",
+            "content" : file("./cloudinit_config/.env"),
+          },
+          {
+            "path" : "/home/ec2-user/user-data.sh",
+            "content" : file("./cloudinit_config/user-data.sh"),
+          },
+        ],
+      }
+    )
   }
   part {
     content_type = "text/x-shellscript"
@@ -41,7 +52,7 @@ resource "aws_instance" "instance" {
   key_name      = aws_key_pair.mi_clave_ssh.key_name # Utiliza la clave importada
 
   # https://stackoverflow.com/questions/72159273/using-terraform-to-pass-a-file-to-newly-created-ec2-instance-without-sharing-the
-  user_data = data.cloudinit_config.example.rendered
+  user_data = data.cloudinit_config.my_cloud_config.rendered
   # para mirar que hace esto, checa el archivo user-data.sh
 
   tags = {
@@ -57,6 +68,20 @@ resource "aws_security_group" "sg" {
   ingress {
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
