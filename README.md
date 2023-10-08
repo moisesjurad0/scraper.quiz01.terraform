@@ -1,4 +1,4 @@
-# terraform-app1
+# scraper.quiz01.terraform
 
 Para obtener las `access_key` y `secret_key` de AWS, y la clave pública `tu-llave-ssh.pub` debes seguir estos pasos
 
