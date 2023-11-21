@@ -56,8 +56,8 @@ data "cloudinit_config" "my_cloud_config" {
 
 # Crear una instancia EC2
 resource "aws_instance" "instance" {
-  ami           = "ami-04c97e62cb19d53f1"            # Amazon Linux 2023 AMI 2023.2.20231113.0 arm64 HVM kernel-6.1 | 64-bit (Arm)
-  instance_type = "t4g.nano"                         # Total Monthly cost: 1.53 USD
+  ami           = "ami-0230bd60aa48260c6"            # Amazon Linux 2023 AMI 2023.2.20231113.0 x86_64 HVM kernel-6.1 | 64-bit (x86)
+  instance_type = "t3a.nano"                         # Total Monthly cost: 1.68 USD
   key_name      = aws_key_pair.mi_clave_ssh.key_name # Utiliza la clave importada
 
   # https://stackoverflow.com/questions/72159273/using-terraform-to-pass-a-file-to-newly-created-ec2-instance-without-sharing-the
