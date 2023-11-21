@@ -1,3 +1,12 @@
+terraform {
+  cloud {
+    organization = "moisesjurad0"
+    workspaces {
+      name = "scraper-quiz01-BOT-API"
+    }
+  }
+}
+
 # Configuración de las credenciales de AWS
 provider "aws" {
   region     = "us-east-1" # Cambia a tu región preferida
@@ -47,8 +56,8 @@ data "cloudinit_config" "my_cloud_config" {
 
 # Crear una instancia EC2
 resource "aws_instance" "instance" {
-  ami           = "ami-051f7e7f6c2f40dc1"            # Amazon Linux 2023 AMI (Free tier eligible)
-  instance_type = "t2.micro"                         # Tipo de instancia gratuito
+  ami           = "ami-04c97e62cb19d53f1"            # Amazon Linux 2023 AMI 2023.2.20231113.0 arm64 HVM kernel-6.1 | 64-bit (Arm)
+  instance_type = "t4g.nano"                         # Total Monthly cost: 1.53 USD
   key_name      = aws_key_pair.mi_clave_ssh.key_name # Utiliza la clave importada
 
   # https://stackoverflow.com/questions/72159273/using-terraform-to-pass-a-file-to-newly-created-ec2-instance-without-sharing-the
